@@ -9,8 +9,6 @@ class Song
         @name = name
         self.artist=(artist) if artist
         self.genre=(genre) if genre
-        @@all << self
-        self
     end
     
     def self.all
@@ -29,7 +27,6 @@ class Song
 
     def save
         @@all.push(self)
-        self
     end
     
     def self.destroy_all
@@ -37,7 +34,9 @@ class Song
     end
     
     def self.create(name)
-        Song.new(name).save
+        song = Song.new(name)
+        song.save
+        song
     end
 
     def self.find_by_name(name)
@@ -46,7 +45,18 @@ class Song
  
  
      def self.find_or_create_by_name(name)
-        self.create(name) unless self.find_by_name(name)
+        if self.find_by_name(name)
+            self.find_by_name(name)
+        else
+            self.create(name)
+        end
      end
+
+     def self.new_from_filename(filename)
+     a = filename.split(' - ')
+     song = self.new(name= a[1], artist= a[0], genre= a[2])
+     song.save unless self.all.include?(song)
+     end
+
 
 end

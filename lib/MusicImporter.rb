@@ -1,6 +1,5 @@
 class MusicImporter
-    
-    attr_accessor :path, :files, :artist, :song, :genre
+    attr_accessor :path, :files
 
 
     def initialize(path)
@@ -8,16 +7,18 @@ class MusicImporter
         @path = path
     end
 
-    def path
-        @path
-    end
 
-    def files
-    Dir[self.path].each {|file| require file }.map{ |file| self.files << file.basename }
-    end
+    # def files
+    #     Dir.open self.path do |dir|
+    #         dir.each do |file|
+    #             self.files.push(file)
+    #         end
+    #     end
+    # end
 
-    def self.import
-        @files.map{|file| Song.new_from_filename(file)}
+    def import
+        filenames = self.files.map{|file| file.basename(file, ".mp3")}
+        filenames.each{|filename| Song.new_from_filename(filename)}
     end
 
 
