@@ -1,5 +1,6 @@
 class Artist
-    attr_accessor :name, :songs
+    attr_accessor :name
+    attr_reader :songs
 
     extend Concerns::Findable
     @@all = []
@@ -24,7 +25,6 @@ class Artist
     end 
 
     def self.all
-        @@all.sort_by!{|artist| artist.name}
         @@all
     end
     

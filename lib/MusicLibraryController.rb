@@ -1,12 +1,10 @@
 class MusicLibraryController
-    attr_reader :song, :artist, :genre
-    attr_accessor :songs
 
 def initialize(path='./db/mp3s')
     MusicImporter.new(path).import
-    @songs = []
-    Song.all.each{|song| @songs.push(song)}
-    @songs = songs
+    # @songs = []
+    # Song.all.each{|song| @songs.push(song)}
+    # @songs = songs
 end
 
 def call
@@ -41,14 +39,23 @@ def call
     end
 end
 
-
 def list_songs
-   self.songs.sort_by!{|song| song.name}.each_with_index{|song, index| 
-    puts "#{index+1}. #{song.artist.name} - #{song.name} - #{song.genre.name}"} 
-end
+    index=0
+    Song.all.sort{ |a, b| a.name <=> b.name }.each do |s|
+              puts "#{index}. #{s.artist.name} - #{s.name} - #{s.genre.name}"
+              index+=1
+    end
+  end
+
+
+# def list_songs
+#    Song.all.sort{|a, b| a.name <=> b.name}.each.with_index(1) do |song, index| 
+#     puts "#{index}. #{song.artist.name} - #{song.name} - #{song.genre.name}"
+# end
+# end
 
 def list_artists
-        Artist.all.each_with_index(1) do |a, i|
+        Artist.all.sort{|a, b| a.name <=> b.name}.each.with_index(0) do |a, i|
           puts "#{i}. #{a.name}"
         end
       end
