@@ -9,19 +9,17 @@ class MusicImporter
 
 
     def files
-        Dir.entries(self.path) do |dir|
-            dir.each do |file|
-                self.files.push(file).uniq!
-            end
-        end
-    end
+        a = Dir.new self.path
+        mp3s = a.entries
+        mp3s.entries.each{|file| @files.push(file)}
+    @files.delete(".")
+    @files.delete("..")
+    @files
+end
 
     def import
-        filenames = self.files.map{|file| file.basename(file, ".mp3")}
-        filenames.each{|filename| Song.create_from_filename(filename)}
+        self.files.each{|filename| Song.create_from_filename(filename)}
     end
-
-
 
 
 
