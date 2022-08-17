@@ -24,6 +24,7 @@ class Artist
     end 
 
     def self.all
+        @@all.sort_by!{|artist| artist.name}
         @@all
     end
     

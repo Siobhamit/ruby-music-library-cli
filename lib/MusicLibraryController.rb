@@ -29,13 +29,13 @@ def call
         self.list_genres
     when 'list artist' 
         a = gets.chomp 
-        self.list_songs_by_artist(a)
+        self.list_songs_by_artist
     when 'list genre' 
         g = gets.chomp 
-        self.list_songs_by_genre(g)
+        self.list_songs_by_genre
     when 'play song' 
         s = gets.chomp
-        self.play_song(s)
+        self.play_song
     else
     self.call unless gets.chomp == 'exit'
     end
@@ -43,33 +43,34 @@ end
 
 
 def list_songs
-    i = 0
-   a = self.songs.collect{|song| song.name}.sort!
-   a.each{|song| i+=1
-    puts "#{i}. #{song.artist.name} - #{songname} - #{song.genre.name}"} 
+   self.songs.sort_by!{|song| song.name}.each_with_index{|song, index| 
+    puts "#{index+1}. #{song.artist.name} - #{song.name} - #{song.genre.name}"} 
 end
 
 def list_artists
-    a = self.songs.sort_by!{|song| song.artist.name}
-    a.each_with_index do |object, index|
-        puts "#{index}. #{object.artist.name}"
+        Artist.all.each_with_index(1) do |a, i|
+          puts "#{i}. #{a.name}"
+        end
       end
-end
+    # a = self.songs.sort_by!{|song| song.artist.name}
+    # a.each_with_index do |object, index| i=index+1
+    #     puts "#{i}. #{object.artist.name}"
+    #   end
 
 def list_genres
     self.songs.collect{|song| song.genre.name}.sort!.each_with_index { |n, i| puts "#{i+1}. #{n}"}
 end
 
-def list_songs_by_artist(a)
-    self.songs.collect{|songs| song.artist.name == a}.sort!.each_with_index { |n, i| puts "#{i+1}. #{n}"}
+def list_songs_by_artist
+    self.songs.collect{|song| song.artist.name == a}.sort!.each_with_index { |n, i| puts "#{i+1}. #{n}"}
 end
 
-def list_songs_by_genre(g)
-    self.songs.collect{|songs| song.genre.name == g}.sort.each_with_index { |n, i| puts "#{i+1}. #{n}"}
+def list_songs_by_genre
+    self.songs.collect{|song| song.genre.name == g}.sort.each_with_index { |n, i| puts "#{i+1}. #{n}"}
 end
 
 
-def play_song(s)
+def play_song
     self.songs.select{|song| song.name == s}.open
 end
 
